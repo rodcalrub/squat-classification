@@ -4,6 +4,7 @@ import pandas as pd
 from hierarchy import DisplayablePath
 # from pathlib import Path
 from data import *
+import numpy as np
 from collections import OrderedDict
 from insider import parse
 #Path raiz de los archivos
@@ -30,21 +31,32 @@ def importJSONS(path):
         if(os.path.isdir(str(path+"/"+folder))):
             sub_folders = os.listdir(path+"/"+folder)
             for json in sub_folders:
-                fileList[path+"/"+folder+'/'+json]=[json for json in os.listdir(path+"/"+folder+'/'+json) if json.endswith('.json')]           
+                fileList[folder]=[json for json in os.listdir(path+"/"+folder+'/'+json) if json.endswith('.json')]           
     return fileList
 
+#path+"/"+
+# JSON con paths de jsons: {<path hasta carpeta(sin carpeta x)>:<lista con jsons dentro>}
+GlobalPath= 'D:/squat-clasifier/temp'
+jsonFolders = importJSONS(GlobalPath)
 
-jsonF = importJSONS('D:/squat-clasifier/data')
-#print(json.dumps(jsonF, indent=4))
 
-
-for jk in jsonF.keys():
+i = 0
+d = {}
+for path_jsons in jsonFolders.keys():
     # parse(json.load(js))
-    for json_inside in jsonF[jk]:
-         with open(jk+'/'+json_inside,'r') as f:
-            print()
-            listaFinal = parse(json.load(f))
-
-print(listaFinal)
-# df1 = pd.DataFrame.from_dict(data=OrderedDict(d.items()),  orient='index',columns=[])
-# df1.to_csv(path+"\\csv_export\\csvFinal.csv")
+    #print(path_jsons)
+    for json_inside in jsonFolders[path_jsons]:
+        with open(GlobalPath+"/"+path_jsons+'/1115_3djoints_index/'+json_inside,'r') as f:
+            #print(jk+'/'+json_inside)
+            listaFrames = parse(json.load(f))
+            for key in listaFrames.keys():
+                d[i] = [json_inside, key, path_jsons]
+                d[i] += [i for i in listaFrames[key]]
+                print("Insertando fila: "+str(i)+ "MIERDA PUTA")
+                i+=1
+print('finish')
+column_names = ['Name', 'Frame', 'Label']
+column_names += range(1,172)
+# print(len(column_names))
+df1 = pd.DataFrame(data=d.values(), columns=column_names)
+df1.to_csv("D:\\squat-clasifier\\csv_export\\csvFinal.csv")
