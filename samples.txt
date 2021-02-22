@@ -1,0 +1,1 @@
+"0918_squat_000001.json", "0918_squat_000004.json", "0918_squat_000040.json","0918_squat_000076.json","0922_squat_000053.json","0922_squat_000197.json", "0922_squat_000180.json","1015_squat_000252.json", "0922_squat_000033.json","1003_squat_000137.json", "0922_squat_000107.json","0918_squat_000052.json",  "0922_squat_000175.json","1015_squat_000233.json" 
